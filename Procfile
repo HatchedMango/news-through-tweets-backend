@@ -1,1 +1,1 @@
-web: python ./flask_rest_service/flask-api.py
+web: gunicorn flask_rest_service:flask-api
