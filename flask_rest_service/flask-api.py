@@ -10,6 +10,9 @@ from datetime import datetime, timedelta
 APP = Flask(__name__)
 API = Api(APP)
 
+news_sources = 'ABC OR CNN OR FoxNews OR WSJ OR MSNBC OR NPR'
+local_sources = 'KSNTNews OR wibw OR 1350kman'
+
 def maptweet(tweet):
     if len(tweet['entities']['urls']) > 0 and tweet['entities']['urls'][0].get('url'):
         source_url = tweet['entities']['urls'][0].get('url')
@@ -36,7 +39,7 @@ class TwitterNewsData(Resource):
         args = self.getarguments()
         search_text = self.getsearchtext(args['news_type'])
 
-        tweets = self.gettweets(search_text)
+        tweets = self.gettweets(search_text, args['news_type'])
         
         top_tweets = self.filtertoptweets(tweets)
         reduced_tweets = self.reducetweetobjects(top_tweets)
@@ -44,9 +47,9 @@ class TwitterNewsData(Resource):
 
     def getsearchtext(self, news_type):
         request_params_table = {
-            'world_news' : 'world news',
-            'us_news' : "us news",
-            'local_news' : "news" 
+            'world_news' : 'global OR world',
+            'us_news' : "us OR united states",
+            'local_news' : 'news' 
         }
 
         return request_params_table[news_type]
@@ -67,7 +70,7 @@ class TwitterNewsData(Resource):
 
         return parser.parse_args()
 
-    def gettweets(self, search_text):
+    def gettweets(self, search_text, news_type):
         tweets = []
 
         for x in range(0, 5):
@@ -75,6 +78,8 @@ class TwitterNewsData(Resource):
             end_formatted = end_date.strftime('%Y-%m-%d')
             begin_date = datetime.today() - timedelta(days=(x + 1))
             begin_formatted = begin_date.strftime('%Y-%m-%d')
+
+            news_from = news_sources if news_type == 'local_news' else local_sources
 
             params = {
                 'q': search_text, 
@@ -84,7 +89,7 @@ class TwitterNewsData(Resource):
                 'until': end_formatted,
                 'filter': 'links',
                 '-filter': 'nativeretweets',
-                'from': 'ABC OR CNN OR FoxNews OR WSJ OR MSNBC OR NPR'
+                'from': news_from
             }
 
             url = 'https://api.twitter.com/1.1/search/tweets.json'
