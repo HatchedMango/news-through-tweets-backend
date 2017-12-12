@@ -57,7 +57,7 @@ class TwitterNewsData(Resource):
         return tweets
 
     def reducetweetobjects(self, tweets):
-        return map(lambda tweets_day: map(maptweet, tweets_day), tweets)
+        return map(lambda tweets_day: list(map(maptweet, tweets_day)), tweets)
 
     def getarguments(self): 
         parser = reqparse.RequestParser()
