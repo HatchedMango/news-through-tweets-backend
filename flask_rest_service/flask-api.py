@@ -83,7 +83,7 @@ class TwitterNewsData(Resource):
                 'since': begin_formatted,
                 'until': end_formatted,
                 'filter': 'links',
-                'from': 'realDonaldTrump'
+                'from': 'ABC'
             }
 
             url = 'https://api.twitter.com/1.1/search/tweets.json'
