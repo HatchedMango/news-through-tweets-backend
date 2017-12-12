@@ -79,7 +79,12 @@ class TwitterNewsData(Resource):
             begin_date = datetime.today() - timedelta(days=(x + 1))
             begin_formatted = begin_date.strftime('%Y-%m-%d')
 
-            news_from = local_sources if news_type == 'local_news' else news_sources
+            if news_type == 'local_news':
+                news_from = local_sources
+                retweets = 'nativeretweets'
+            else:
+                news_from = news_sources
+                retweets = ''
 
             params = {
                 'q': search_text, 
@@ -88,7 +93,7 @@ class TwitterNewsData(Resource):
                 'since': begin_formatted,
                 'until': end_formatted,
                 'filter': 'links',
-                '-filter': 'nativeretweets',
+                '-filter': retweets,
                 'from': news_from
             }
 
