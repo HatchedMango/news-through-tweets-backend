@@ -11,6 +11,11 @@ APP = Flask(__name__)
 API = Api(APP)
 
 def maptweet(tweet):
+    if tweet.get('name'):
+        user_name = tweet.get('name')
+    else:
+        user_name = ''
+
     if len(tweet['entities']['urls']) > 0 and tweet['entities']['urls'][0].get('url'):
         source_url = tweet['entities']['urls'][0].get('url')
     else:
@@ -23,7 +28,7 @@ def maptweet(tweet):
 
     reduced_tweet = {
         'id': tweet['id_str'],
-        'title': tweet['name'],
+        'title': user_name,
         'text': tweet['text'],
         'source_url': source_url,
         'media_url': media_url,
