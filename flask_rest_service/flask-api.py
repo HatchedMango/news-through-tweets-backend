@@ -49,7 +49,7 @@ class TwitterNewsData(Resource):
         request_params_table = {
             'world_news' : 'global OR world',
             'us_news' : "us OR united states",
-            'local_news' : 'news' 
+            'local_news' : '' 
         }
 
         return request_params_table[news_type]
@@ -81,12 +81,12 @@ class TwitterNewsData(Resource):
 
             if news_type == 'local_news':
                 news_from = local_sources
-                retweets = 'nativeretweets'
-                links = 'links'
-            else:
-                news_from = news_sources
                 retweets = ''
                 links = ''
+            else:
+                news_from = news_sources
+                retweets = 'nativeretweets'
+                links = 'links'
 
             params = {
                 'q': search_text, 
@@ -94,9 +94,9 @@ class TwitterNewsData(Resource):
                 'result_type': 'popular',
                 'since': begin_formatted,
                 'until': end_formatted,
-                # 'filter': links,
-                # '-filter': retweets,
-                'from': local_sources
+                'filter': links,
+                '-filter': retweets,
+                'from': news_from
             }
 
             url = 'https://api.twitter.com/1.1/search/tweets.json'
