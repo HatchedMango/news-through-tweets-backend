@@ -96,7 +96,7 @@ class TwitterNewsData(Resource):
                 'until': end_formatted,
                 # 'filter': links,
                 # '-filter': retweets,
-                'from': news_from
+                'from': local_sources
             }
 
             url = 'https://api.twitter.com/1.1/search/tweets.json'
