@@ -33,7 +33,7 @@ class TwitterNewsData(Resource):
         args = self.getarguments()
         search_text = self.getsearchtext(args['news_type'])
 
-        tweets = self.gettweets()
+        tweets = self.gettweets(search_text)
         
         top_tweets = self.filtertoptweets(tweets)
         reduced_tweets = self.reducetweetobjects(top_tweets)
@@ -62,7 +62,7 @@ class TwitterNewsData(Resource):
 
         return parser.parse_args()
 
-    def gettweets(self):
+    def gettweets(self, search_text):
         params = {'q': search_text, 'lang': 'en', 'result_type': 'popular'}
         url = 'https://api.twitter.com/1.1/search/tweets.json'
         auth = OAuth1(
