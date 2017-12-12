@@ -73,6 +73,11 @@ class TwitterNewsData(Resource):
     def gettweets(self, search_text, news_type):
         tweets = []
 
+        if news_type == 'local_news':
+            news_from = local_sources
+        else:
+            news_from = news_sources
+
         for x in range(0, 5):
             end_date = datetime.today() - timedelta(days=x)
             end_formatted = end_date.strftime('%Y-%m-%d')
@@ -80,22 +85,17 @@ class TwitterNewsData(Resource):
             begin_formatted = begin_date.strftime('%Y-%m-%d')
 
             if news_type == 'local_news':
-                news_from = local_sources
-                retweets = ''
-                links = ''
-            else:
-                news_from = news_sources
-                retweets = 'nativeretweets'
-                links = 'links'
+                begin_formatted = ''
+                end_formatted = ''
 
             params = {
                 'q': search_text, 
                 'lang': 'en', 
                 'result_type': 'popular',
-                # 'since': begin_formatted,
-                # 'until': end_formatted,
-                'filter': links,
-                '-filter': retweets,
+                'since': begin_formatted,
+                'until': end_formatted,
+                'filter': 'links',
+                '-filter': 'nativeretweets',
                 'from': news_from
             }
 
