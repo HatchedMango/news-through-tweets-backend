@@ -84,7 +84,7 @@ class TwitterNewsData(Resource):
                 'until': end_formatted,
                 'filter': 'links',
                 '-filter': 'nativeretweets',
-                'from': 'ABC OR CNN OR FoxNews'
+                'from': 'ABC OR CNN OR FoxNews OR WSJ OR MSNBC OR NPR'
             }
 
             url = 'https://api.twitter.com/1.1/search/tweets.json'
