@@ -65,14 +65,15 @@ class TwitterNewsData(Resource):
 
     def gettweets(self, search_text):
         now = datetime.now()
-        date_formatted = now.strftime('%Y-%m-%d')
+        today = now.strftime('%Y-%m-%d')
+        yesterday = datetime.today() - timedelta(days=1)
 
         params = {
             'q': search_text, 
             'lang': 'en', 
             'result_type': 'popular',
-            'since': date_formatted,
-            'until': date_formatted 
+            'since': yesterday,
+            'until': today 
         }
 
         url = 'https://api.twitter.com/1.1/search/tweets.json'
