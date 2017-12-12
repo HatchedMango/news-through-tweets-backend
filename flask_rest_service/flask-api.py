@@ -50,12 +50,14 @@ class TwitterNewsData(Resource):
         return request_params_table[news_type]
 
     def filtertoptweets(self, tweets):
-        tweets.sort(key=lambda x: x["retweet_count"], reverse=True)
+        for tweets_day in tweets:
+            tweets_day.sort(key=lambda x: x["retweet_count"], reverse=True)
+            tweets_day = tweets_day[:5]
 
-        return tweets[:5]
+        return tweets
 
     def reducetweetobjects(self, tweets):
-        return map(maptweet, tweets)
+        return map(lambda tweets_day: map(maptweet, tweets_day), tweets)
 
     def getarguments(self): 
         parser = reqparse.RequestParser()
@@ -64,31 +66,36 @@ class TwitterNewsData(Resource):
         return parser.parse_args()
 
     def gettweets(self, search_text):
-        end_date = datetime.today() + timedelta(days=0)
-        end_formatted = end_date.strftime('%Y-%m-%d')
-        begin_date = datetime.today() + timedelta(days=-1)
-        begin_formatted = begin_date.strftime('%Y-%m-%d')
+        tweets = []
 
-        params = {
-            'q': search_text, 
-            'lang': 'en', 
-            'result_type': 'popular',
-            'since': begin_formatted,
-            'until': end_formatted 
-        }
+        for x in range(0, 5):
+            end_date = datetime.today() - timedelta(days=x)
+            end_formatted = end_date.strftime('%Y-%m-%d')
+            begin_date = datetime.today() - timedelta(days=(x + 1))
+            begin_formatted = begin_date.strftime('%Y-%m-%d')
 
-        url = 'https://api.twitter.com/1.1/search/tweets.json'
-        auth = OAuth1(
-            'AGsVhqXmwc9fGM82xVcIpRUcj',
-            'nN3HKcMOLlyy91RjOaFyoFe64GwRpSBObaC68fkJEVDHyjntfw',
-            '826265268867432449-KLaZ2b8afiGmuINEPKmqA4DjWv4ENQT',
-            'W3nJGED61ALQOerEC6Esl2A74hHeDI4Z8fRSqG9D1besv'
-        )
+            params = {
+                'q': search_text, 
+                'lang': 'en', 
+                'result_type': 'popular',
+                'since': begin_formatted,
+                'until': end_formatted 
+            }
 
-        req_object = requests.get(url, params=params, auth=auth)
-        json_data = req_object.json()
+            url = 'https://api.twitter.com/1.1/search/tweets.json'
+            auth = OAuth1(
+                'AGsVhqXmwc9fGM82xVcIpRUcj',
+                'nN3HKcMOLlyy91RjOaFyoFe64GwRpSBObaC68fkJEVDHyjntfw',
+                '826265268867432449-KLaZ2b8afiGmuINEPKmqA4DjWv4ENQT',
+                'W3nJGED61ALQOerEC6Esl2A74hHeDI4Z8fRSqG9D1besv'
+            )
+
+            req_object = requests.get(url, params=params, auth=auth)
+            json_data = req_object.json()
+
+            tweets.append(json_data["statuses"])
         
-        return json_data["statuses"]
+        return tweets
 
 API.add_resource(TwitterNewsData, '/news_data')
 
