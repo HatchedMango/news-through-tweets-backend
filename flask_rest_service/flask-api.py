@@ -82,9 +82,11 @@ class TwitterNewsData(Resource):
             if news_type == 'local_news':
                 news_from = local_sources
                 retweets = 'nativeretweets'
+                links = 'links'
             else:
                 news_from = news_sources
                 retweets = ''
+                links = ''
 
             params = {
                 'q': search_text, 
@@ -92,7 +94,7 @@ class TwitterNewsData(Resource):
                 'result_type': 'popular',
                 'since': begin_formatted,
                 'until': end_formatted,
-                'filter': 'links',
+                'filter': links,
                 '-filter': retweets,
                 'from': news_from
             }
