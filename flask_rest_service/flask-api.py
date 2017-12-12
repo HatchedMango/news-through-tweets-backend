@@ -67,12 +67,13 @@ class TwitterNewsData(Resource):
         now = datetime.now()
         today = now.strftime('%Y-%m-%d')
         yesterday = datetime.today() - timedelta(days=1)
+        yesterday_formatted = yesterday.strftime('%Y-%m-%d')
 
         params = {
             'q': search_text, 
             'lang': 'en', 
             'result_type': 'popular',
-            'since': yesterday,
+            'since': yesterday_formatted,
             'until': today 
         }
 
