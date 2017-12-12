@@ -11,7 +11,7 @@ APP = Flask(__name__)
 API = Api(APP)
 
 news_sources = 'ABC OR CNN OR FoxNews OR WSJ OR MSNBC OR NPR'
-local_sources = 'KSNTNews OR wibw OR 1350kman'
+local_sources = 'KSNTNews OR wibw OR 1350kman OR FoxNews'
 
 def maptweet(tweet):
     if len(tweet['entities']['urls']) > 0 and tweet['entities']['urls'][0].get('url'):
@@ -94,8 +94,8 @@ class TwitterNewsData(Resource):
                 'result_type': 'popular',
                 'since': begin_formatted,
                 'until': end_formatted,
-                # 'filter': links,
-                # '-filter': retweets,
+                'filter': links,
+                '-filter': retweets,
                 'from': news_from
             }
 
