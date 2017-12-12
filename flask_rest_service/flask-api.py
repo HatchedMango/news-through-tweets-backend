@@ -82,7 +82,8 @@ class TwitterNewsData(Resource):
                 'result_type': 'popular',
                 'since': begin_formatted,
                 'until': end_formatted,
-                'filter': 'links'
+                'filter': 'links',
+                'from': 'realDonaldTrump'
             }
 
             url = 'https://api.twitter.com/1.1/search/tweets.json'
