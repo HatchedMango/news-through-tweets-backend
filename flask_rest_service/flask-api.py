@@ -5,6 +5,7 @@ import os
 from flask import Flask
 from flask_restful import Resource, Api, reqparse
 from requests_oauthlib import OAuth1
+from datetime import datetime, timedelta
 
 APP = Flask(__name__)
 API = Api(APP)
@@ -63,7 +64,17 @@ class TwitterNewsData(Resource):
         return parser.parse_args()
 
     def gettweets(self, search_text):
-        params = {'q': search_text, 'lang': 'en', 'result_type': 'popular'}
+        now = datetime.datetime.now()
+        date_formatted = now.strftime('%Y-%m-%d')
+
+        params = {
+            'q': search_text, 
+            'lang': 'en', 
+            'result_type': 'popular',
+            'since': date_formatted,
+            'until': date_formatted 
+        }
+
         url = 'https://api.twitter.com/1.1/search/tweets.json'
         auth = OAuth1(
             'AGsVhqXmwc9fGM82xVcIpRUcj',
