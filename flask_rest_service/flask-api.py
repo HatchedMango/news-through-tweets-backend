@@ -49,7 +49,7 @@ class TwitterNewsData(Resource):
         request_params_table = {
             'world_news' : 'global OR world',
             'us_news' : "us OR united states",
-            'local_news' : '' 
+            'local_news' : 'news' 
         }
 
         return request_params_table[news_type]
