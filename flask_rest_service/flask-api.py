@@ -82,7 +82,7 @@ class TwitterNewsData(Resource):
                 'result_type': 'popular',
                 'since': begin_formatted,
                 'until': end_formatted,
-                'filter': 'Links'
+                'filter': 'links'
             }
 
             url = 'https://api.twitter.com/1.1/search/tweets.json'
