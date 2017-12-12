@@ -44,8 +44,8 @@ class TwitterNewsData(Resource):
 
     def getsearchtext(self, news_type):
         request_params_table = {
-            'world_news' : 'worldnews',
-            'us_news' : "usnews",
+            'world_news' : 'world news',
+            'us_news' : "us news",
             'local_news' : "news" 
         }
 
