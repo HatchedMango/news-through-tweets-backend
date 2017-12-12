@@ -28,7 +28,7 @@ def maptweet(tweet):
         'id': tweet['id_str'],
         'title': tweet['user']['name'],
         'text': tweet['text'],
-        'source_url': tweet['url'],
+        'source_url': source_url,
         'media_url': media_url,
     }
     return reduced_tweet
