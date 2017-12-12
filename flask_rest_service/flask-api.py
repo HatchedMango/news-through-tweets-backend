@@ -56,8 +56,6 @@ class TwitterNewsData(Resource):
             tweets[i].sort(key=lambda x: x["retweet_count"], reverse=True)
             tweets[i] = tweets[i][:5]
 
-        # tweets = [tweets_day[:5] for tweets_day in tweets]
-
         return tweets
 
     def reducetweetobjects(self, tweets):
@@ -83,7 +81,8 @@ class TwitterNewsData(Resource):
                 'lang': 'en', 
                 'result_type': 'popular',
                 'since': begin_formatted,
-                'until': end_formatted 
+                'until': end_formatted,
+                'filter': 'images'
             }
 
             url = 'https://api.twitter.com/1.1/search/tweets.json'
