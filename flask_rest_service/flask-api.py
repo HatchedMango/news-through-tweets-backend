@@ -11,7 +11,7 @@ APP = Flask(__name__)
 API = Api(APP)
 
 news_sources = 'ABC OR CNN OR FoxNews OR WSJ OR MSNBC OR NPR'
-local_sources = 'KSNTNews OR wibw OR 1350kman OR FoxNews'
+local_sources = 'KSNTNews OR WIBW OR 1350kman'
 
 def maptweet(tweet):
     if len(tweet['entities']['urls']) > 0 and tweet['entities']['urls'][0].get('url'):
