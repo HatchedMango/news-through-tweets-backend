@@ -50,9 +50,11 @@ class TwitterNewsData(Resource):
         return request_params_table[news_type]
 
     def filtertoptweets(self, tweets):
-        for tweets_day in tweets:
-            tweets_day.sort(key=lambda x: x["retweet_count"], reverse=True)
-            tweets_day = tweets_day[:5]
+        for i, tweets_day in enumerate(tweets):
+            tweets[i].sort(key=lambda x: x["retweet_count"], reverse=True)
+            tweets[i] = tweets[i][:5]
+
+        # tweets = [tweets_day[:5] for tweets_day in tweets]
 
         return tweets
 
