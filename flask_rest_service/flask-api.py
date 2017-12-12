@@ -79,7 +79,7 @@ class TwitterNewsData(Resource):
             begin_date = datetime.today() - timedelta(days=(x + 1))
             begin_formatted = begin_date.strftime('%Y-%m-%d')
 
-            news_from = news_sources if news_type == 'local_news' else local_sources
+            news_from = local_sources if news_type == 'local_news' else news_sources
 
             params = {
                 'q': search_text, 
