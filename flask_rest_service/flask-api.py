@@ -64,9 +64,9 @@ class TwitterNewsData(Resource):
         return parser.parse_args()
 
     def gettweets(self, search_text):
-        end_date = datetime.today() + timedelta(days=1)
+        end_date = datetime.today() + timedelta(days=0)
         end_formatted = end_date.strftime('%Y-%m-%d')
-        begin_date = datetime.today() + timedelta(days=0)
+        begin_date = datetime.today() + timedelta(days=-1)
         begin_formatted = begin_date.strftime('%Y-%m-%d')
 
         params = {
