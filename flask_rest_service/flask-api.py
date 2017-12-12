@@ -83,7 +83,7 @@ class TwitterNewsData(Resource):
                 'since': begin_formatted,
                 'until': end_formatted,
                 'filter': 'links',
-                'from': 'ABC'
+                'from': 'ABC OR CNN'
             }
 
             url = 'https://api.twitter.com/1.1/search/tweets.json'
