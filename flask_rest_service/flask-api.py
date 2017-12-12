@@ -9,12 +9,6 @@ from requests_oauthlib import OAuth1
 APP = Flask(__name__)
 API = Api(APP)
 
-request_params_table = {
-    'world_news' : 'worldnews',
-    'us_news' : "usnews",
-    'local_news' : "news" 
-}
-
 def maptweet(tweet):
     if len(tweet['entities']['urls']) > 0 and tweet['entities']['urls'][0].get('url'):
         source_url = tweet['entities']['urls'][0].get('url')
@@ -36,31 +30,22 @@ def maptweet(tweet):
 class TwitterNewsData(Resource):
     def get(self):
 
-        parser = reqparse.RequestParser()
-        parser.add_argument('news_type', type=str, help='global, national, or local')
-
-        args = parser.parse_args()
+        args = self.getarguments()
         search_text = self.getsearchtext(args['news_type'])
 
-        params = {'q': search_text, 'lang': 'en', 'result_type': 'popular'}
-        url = 'https://api.twitter.com/1.1/search/tweets.json'
-
-        auth = OAuth1(
-            'AGsVhqXmwc9fGM82xVcIpRUcj',
-            'nN3HKcMOLlyy91RjOaFyoFe64GwRpSBObaC68fkJEVDHyjntfw',
-            '826265268867432449-KLaZ2b8afiGmuINEPKmqA4DjWv4ENQT',
-            'W3nJGED61ALQOerEC6Esl2A74hHeDI4Z8fRSqG9D1besv'
-        )
-
-        req_object = requests.get(url, params=params, auth=auth)
-        json_data = req_object.json()
-        tweets = json_data["statuses"]
+        tweets = self.gettweets()
         
         top_tweets = self.filtertoptweets(tweets)
         reduced_tweets = self.reducetweetobjects(top_tweets)
         return json.dumps(list(reduced_tweets))
 
     def getsearchtext(self, news_type):
+        request_params_table = {
+            'world_news' : 'worldnews',
+            'us_news' : "usnews",
+            'local_news' : "news" 
+        }
+
         return request_params_table[news_type]
 
     def filtertoptweets(self, tweets):
@@ -70,6 +55,27 @@ class TwitterNewsData(Resource):
 
     def reducetweetobjects(self, tweets):
         return map(maptweet, tweets)
+
+    def getarguments(self): 
+        parser = reqparse.RequestParser()
+        parser.add_argument('news_type', type=str, help='global, national, or local')
+
+        return parser.parse_args()
+
+    def gettweets(self):
+        params = {'q': search_text, 'lang': 'en', 'result_type': 'popular'}
+        url = 'https://api.twitter.com/1.1/search/tweets.json'
+        auth = OAuth1(
+            'AGsVhqXmwc9fGM82xVcIpRUcj',
+            'nN3HKcMOLlyy91RjOaFyoFe64GwRpSBObaC68fkJEVDHyjntfw',
+            '826265268867432449-KLaZ2b8afiGmuINEPKmqA4DjWv4ENQT',
+            'W3nJGED61ALQOerEC6Esl2A74hHeDI4Z8fRSqG9D1besv'
+        )
+
+        req_object = requests.get(url, params=params, auth=auth)
+        json_data = req_object.json()
+        
+        return json_data["statuses"]
 
 API.add_resource(TwitterNewsData, '/news_data')
 
