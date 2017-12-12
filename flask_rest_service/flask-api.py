@@ -64,17 +64,17 @@ class TwitterNewsData(Resource):
         return parser.parse_args()
 
     def gettweets(self, search_text):
-        now = datetime.now()
-        today = now.strftime('%Y-%m-%d')
-        yesterday = datetime.today() - timedelta(days=1)
-        yesterday_formatted = yesterday.strftime('%Y-%m-%d')
+        end_date = datetime.today() + timedelta(days=1)
+        end_formatted = end_date.strftime('%Y-%m-%d')
+        begin_date = datetime.today() + timedelta(days=0)
+        begin_formatted = begin_date.strftime('%Y-%m-%d')
 
         params = {
             'q': search_text, 
             'lang': 'en', 
             'result_type': 'popular',
-            'since': yesterday_formatted,
-            'until': today 
+            'since': begin_formatted,
+            'until': end_formatted 
         }
 
         url = 'https://api.twitter.com/1.1/search/tweets.json'
