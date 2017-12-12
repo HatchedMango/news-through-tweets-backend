@@ -94,8 +94,8 @@ class TwitterNewsData(Resource):
                 'result_type': 'popular',
                 'since': begin_formatted,
                 'until': end_formatted,
-                'filter': links,
-                '-filter': retweets,
+                # 'filter': links,
+                # '-filter': retweets,
                 'from': news_from
             }
 
