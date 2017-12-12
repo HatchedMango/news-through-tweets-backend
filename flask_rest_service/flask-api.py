@@ -64,7 +64,7 @@ class TwitterNewsData(Resource):
         return parser.parse_args()
 
     def gettweets(self, search_text):
-        now = datetime.datetime.now()
+        now = datetime.now()
         date_formatted = now.strftime('%Y-%m-%d')
 
         params = {
