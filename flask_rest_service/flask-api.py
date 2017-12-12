@@ -83,6 +83,7 @@ class TwitterNewsData(Resource):
                 'since': begin_formatted,
                 'until': end_formatted,
                 'filter': 'links',
+                '-filter': 'nativeretweets',
                 'from': 'ABC OR CNN'
             }
 
