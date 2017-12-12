@@ -75,10 +75,12 @@ class TwitterNewsData(Resource):
 
         if news_type == 'local_news':
             news_from = local_sources
+            time_intervals = 1
         else:
             news_from = news_sources
+            time_intervals = 5
 
-        for x in range(0, 5):
+        for x in range(0, time_intervals):
             end_date = datetime.today() - timedelta(days=x)
             end_formatted = end_date.strftime('%Y-%m-%d')
             begin_date = datetime.today() - timedelta(days=(x + 1))
